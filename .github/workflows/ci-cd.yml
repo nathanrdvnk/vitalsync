@@ -88,7 +88,7 @@ jobs:
           echo "DB_PASSWORD=vitalsync_password" >> .env
 
       - name: Start services
-        run: docker-compose down
+        run: docker compose up -d --build
 
       - name: Wait for backend to be ready
         run: sleep 10
@@ -96,8 +96,7 @@ jobs:
       - name: Health check
         run: |
           curl --fail http://localhost:3000/health || \
-          (echo "Health check failed!" && docker-compose logs backend && exit 1)
-
+          (echo "Health check failed!" && docker compose logs backend && exit 1)
       - name: Stop services
         if: always()
-        run: docker-compose down
+        run: docker compose down
